@@ -13,9 +13,17 @@ impl UserDividendEpoch {
 #[account]
 pub struct  DividendVault {
     pub epoch: u64,
-    pub lamport_reward_amount: u64
+    pub lamport_dividend_amount: u64,
+    pub total_share: u64
 }
 
 impl DividendVault {
-    pub const LEN: usize = 8 + 8*2;
+    pub const LEN: usize = 8 + 8*3;
+}
+
+#[account]
+pub struct DividendVaultWallet {}
+
+impl  DividendVaultWallet {
+    pub const LEN: usize = 8;
 }
