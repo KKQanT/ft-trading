@@ -1,7 +1,7 @@
-use anchor_lang::prelude::*;
+use anchor_lang::{prelude::*, system_program};
 use anchor_spl::{token::{self, TokenAccount}, associated_token};
 
-use crate::{SellerEscrow, DummyError, DividendVault, DividendVaultWallet};
+use crate::{SellerEscrow, DummyError, DividendVault, DividendVaultWallet, seller_escrow, PLATFORM_FEE};
 
 #[derive(Accounts)]
 #[instruction(
@@ -33,6 +33,7 @@ pub struct Buy<'info> {
     #[account(mut)]
     pub escrow_token_account: Box<Account<'info, token::TokenAccount>>,
     pub token_program: Program<'info, token::Token>,
+    pub system_program: Program<'info, System>,
     #[account(
         mut,
         seeds = [
@@ -103,7 +104,72 @@ pub fn buy(
         return err!(DummyError::Error)
     }
 
-    //to do
+    let valid_epoch = dividend_vault.validate_epoch();
+    if !valid_epoch {
+        msg!("invalid epoch");
+        return err!(DummyError::Error);
+    }
+
+    //calculate price to transfer
+    let price = seller_escrow.get_price(amount);
+    let platform_fee = (((PLATFORM_FEE as f64)/100.0) * (price as f64)) as u64;
+    let seller_receive_amount = price - platform_fee;
+
+    //transfer sol to seller
+    let sol_to_user_cpi_context = CpiContext::new(
+        ctx.accounts.system_program.to_account_info(), 
+        system_program::Transfer {
+            from: buyer.to_account_info(),
+            to: seller.clone()
+        });
+    
+    system_program::transfer(
+        sol_to_user_cpi_context, 
+        seller_receive_amount
+    )?;
+    
+    //transfer sol to us
+    let sol_to_us_cpi_contecx = CpiContext::new(
+        ctx.accounts.system_program.to_account_info(), 
+        system_program::Transfer {
+            from: buyer.to_account_info(),
+            to: dividend_vault_wallet.to_account_info()
+        });
+    
+    system_program::transfer(
+        sol_to_us_cpi_contecx, 
+        platform_fee
+    )?;
+
+    //transfer stock to user
+
+    let seller_key = seller.key();
+
+    let seller_escrow_seeds = &[
+        b"seller_escrow",
+        seller_key.as_ref(),
+        token_address.as_ref(),
+        escrow_id.as_ref(),
+        &[seller_escrow_bump]
+    ];
+
+    let seller_escrow_signers = [&seller_escrow_seeds[..]];
+
+    let transfer_token_cpi_ctx = CpiContext::new_with_signer(
+        token_program.to_account_info(),
+        token::Transfer {
+            from: escrow_token_account.to_account_info(),
+            to: buyer_token_account.to_account_info(),
+            authority: seller_escrow.to_account_info()
+        },
+        &seller_escrow_signers
+    );
+
+    token::transfer(transfer_token_cpi_ctx, amount)?;
+
+    //accumulate fee we got    
+    dividend_vault.lamport_dividend_amount += platform_fee;
+
 
     Ok(())
 }

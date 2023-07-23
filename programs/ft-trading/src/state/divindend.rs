@@ -1,5 +1,7 @@
 use anchor_lang::prelude::*;
 
+use crate::{START_TS, EPOCH_DURATION};
+
 #[account]
 pub struct UserDividendEpoch {
     pub epoch: u64,
@@ -19,6 +21,18 @@ pub struct  DividendVault {
 
 impl DividendVault {
     pub const LEN: usize = 8 + 8*3;
+
+    pub fn validate_epoch(&self) -> bool {
+        let now_ts = Clock::get().unwrap().unix_timestamp;
+        let current_epoch = ((now_ts - START_TS)/EPOCH_DURATION) as u64;
+        if self.epoch == current_epoch {
+            true 
+        } else {
+            msg!("epoch: {}", self.epoch.to_string().as_str());
+            msg!("expected epoch: {}", current_epoch.to_string().as_str());
+            false
+        }
+    }
 }
 
 #[account]
