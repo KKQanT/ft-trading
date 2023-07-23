@@ -3,13 +3,14 @@ use anchor_lang::prelude::*;
 use crate::{START_TS, EPOCH_DURATION};
 
 #[account]
-pub struct UserDividendEpoch {
+pub struct UserShareAccount {
     pub epoch: u64,
     pub reward_share: u64,
+    pub owner: Pubkey
 }
 
-impl UserDividendEpoch {
-    pub const LEN: usize = 8 + 8 + 8;
+impl UserShareAccount {
+    pub const LEN: usize = 8 + 8 + 8 + 32;
 }
 
 #[account]
