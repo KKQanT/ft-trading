@@ -60,9 +60,9 @@ pub fn buy(
     token_address: Pubkey,
     amount: u64,
     seller_escrow_bump: u8,
-    epoch: u64,
-    dividend_vault_bump: u8,
-    dividend_vault_wallet_bump: u8
+    _epoch: u64,
+    _dividend_vault_bump: u8,
+    _dividend_vault_wallet_bump: u8
 ) -> Result<()> {
     let seller_escrow = &mut ctx.accounts.seller_escrow;
     let seller = &mut ctx.accounts.seller;
