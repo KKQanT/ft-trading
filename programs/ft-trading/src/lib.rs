@@ -18,10 +18,93 @@ declare_id!("SETaVQKfUNLS2xUR61uauMTptRdKyaKHfPYjDvHAnxv");
 pub mod ft_trading {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        Ok(())
+    pub fn create_dividend_vault(
+        ctx: Context<CreateDividendVault>, 
+        epoch: u64
+    ) -> Result<()> {
+        intructions::admin::create_dividend_vault(ctx, epoch)
     }
-}
 
-#[derive(Accounts)]
-pub struct Initialize {}
+    pub fn whitelist_nft(
+        ctx: Context<WhitelistNFT>,
+        mint_address: Pubkey
+    ) -> Result<()> {
+        intructions::admin::whitelist_nft(
+            ctx, 
+            mint_address
+        )
+    }
+
+    pub fn sell(
+        ctx: Context<Sell>,
+        escrow_id: Pubkey,
+        token_address: Pubkey,
+        amount: u64,
+        price_per_token: u64,
+    ) -> Result<()> {
+        intructions::sell::handler(ctx, escrow_id, token_address, amount, price_per_token)
+    }
+
+    pub fn buy(
+        ctx: Context<Buy>,
+        escrow_id: Pubkey,
+        token_address: Pubkey,
+        amount: u64,
+        seller_escrow_bump: u8,
+        epoch: u64,
+        dividend_vault_bump: u8,
+        dividend_vault_wallet_bump: u8
+    ) -> Result<()> {
+        intructions::buy::handler(
+            ctx, 
+            escrow_id, 
+            token_address, 
+            amount, 
+            seller_escrow_bump, 
+            epoch, 
+            dividend_vault_bump, 
+            dividend_vault_wallet_bump
+        )
+    }
+
+    pub fn create_share_account(
+        ctx: Context<CreateShareAccount>,
+        epoch: u64
+    ) -> Result<()> {
+        intructions::claim::create_share_account(ctx, epoch)
+    }
+
+    pub fn claim_share(
+        ctx: Context<ClaimShare>,
+        epoch: u64, 
+        user_share_account_bump: u8,
+        dividend_vault_bump: u8,
+        whitelisted_nft_bump: u8
+    ) -> Result<()> {
+        intructions::claim::claim_share(
+            ctx, 
+            epoch, 
+            user_share_account_bump, 
+            dividend_vault_bump, 
+            whitelisted_nft_bump
+        )
+    }
+
+    pub fn claim_dividend(
+        ctx: Context<ClaimDividend>,
+        epoch: u64,
+        user_share_account_bump: u8,
+        dividend_vault_bump: u8,
+        dividend_vault_wallet_bump: u8
+    ) -> Result<()> {
+        intructions::claim::claim_dividend(
+            ctx, 
+            epoch, 
+            user_share_account_bump, 
+            dividend_vault_bump, 
+            dividend_vault_wallet_bump
+        )
+    }
+
+
+}

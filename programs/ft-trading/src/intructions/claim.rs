@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::TokenAccount;
 
-use crate::{UserShareAccount, START_TS, EPOCH_DURATION, DividendVault, WhitelistedNFT, instruction, DividendVaultWallet};
+use crate::{UserShareAccount, START_TS, EPOCH_DURATION, DividendVault, WhitelistedNFT, DividendVaultWallet};
 use crate::DummyError;
 
 #[derive(Accounts)]

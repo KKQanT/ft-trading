@@ -1,7 +1,7 @@
 use anchor_lang::{prelude::*, system_program};
 use anchor_spl::{token::{self, TokenAccount}, associated_token};
 
-use crate::{SellerEscrow, DummyError, DividendVault, DividendVaultWallet, seller_escrow, PLATFORM_FEE};
+use crate::{SellerEscrow, DummyError, DividendVault, DividendVaultWallet, PLATFORM_FEE};
 
 #[derive(Accounts)]
 #[instruction(
@@ -25,6 +25,7 @@ pub struct Buy<'info> {
         bump = seller_escrow_bump,
     )]
     pub seller_escrow: Account<'info, SellerEscrow>,
+    /// CHECK: Seller Account will be checked during both seed (of seller escrow account) checking and intruction process
     pub seller: AccountInfo<'info>,
     #[account(mut)]
     pub buyer: Signer<'info>,
@@ -54,7 +55,7 @@ pub struct Buy<'info> {
     pub dividend_vault_wallet: Account<'info, DividendVaultWallet>,
 }
 
-pub fn buy(
+pub fn handler(
     ctx: Context<Buy>,
     escrow_id: Pubkey,
     token_address: Pubkey,
