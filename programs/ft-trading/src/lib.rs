@@ -25,11 +25,11 @@ pub mod ft_trading {
         intructions::admin::create_dividend_vault(ctx, epoch)
     }
 
-    pub fn whitelist_nft(
+    pub fn add_whitelist_nft(
         ctx: Context<WhitelistNFT>,
         mint_address: Pubkey
     ) -> Result<()> {
-        intructions::admin::whitelist_nft(
+        intructions::admin::add_whitelist_nft(
             ctx, 
             mint_address
         )

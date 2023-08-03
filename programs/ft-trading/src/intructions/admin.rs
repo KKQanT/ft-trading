@@ -75,7 +75,7 @@ pub struct  WhitelistNFT<'info> {
     pub system_program: Program<'info, System>
 }
 
-pub fn whitelist_nft(
+pub fn add_whitelist_nft(
     ctx: Context<WhitelistNFT>,
     mint_address: Pubkey
 ) -> Result<()> {
