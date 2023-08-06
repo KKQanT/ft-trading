@@ -12,7 +12,7 @@ pub struct SellerEscrow {
 }
 
 impl SellerEscrow {
-    pub const LEN: usize = 8 + 32 + 32 + 8;
+    pub const LEN: usize = 8 + 32 + 32 + 32 + 8 + 8;
     
     pub fn verify_token_account(
         &self, seller_account_key: &Pubkey, 
