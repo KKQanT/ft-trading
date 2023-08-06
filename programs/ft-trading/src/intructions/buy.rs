@@ -114,7 +114,7 @@ pub fn handler(
     //calculate price to transfer
     let price = seller_escrow.get_price(amount);
     let platform_fee = (((PLATFORM_FEE as f64)/100.0) * (price as f64)) as u64;
-    let seller_receive_amount = price - platform_fee;
+    let seller_receive_amount = price;
 
     //transfer sol to seller
     let sol_to_user_cpi_context = CpiContext::new(
