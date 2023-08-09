@@ -101,4 +101,14 @@ pub mod ft_trading {
             dividend_vault_wallet_bump,
         )
     }
+
+    pub fn force_close_sell(
+        ctx: Context<ForceCloseSell>,
+        escrow_id: Pubkey,
+        token_address: Pubkey,
+        seller: Pubkey,
+        bump: u8,
+    ) -> Result<()> {
+        intructions::close::handler(ctx, escrow_id, token_address, seller, bump)
+    }
 }

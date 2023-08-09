@@ -126,7 +126,7 @@ pub fn reset_whitelist_nft(
     Ok(())
 }
 
-fn verify_super_auth(super_auth: &Signer) -> bool {
+pub fn verify_super_auth(super_auth: &Signer) -> bool {
     let expected_account = Pubkey::from_str(SUPER_AUTHORITY).unwrap();
     if super_auth.key() == expected_account {
         true
