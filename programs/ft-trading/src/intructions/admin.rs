@@ -84,7 +84,7 @@ pub fn add_whitelist_nft(ctx: Context<WhitelistNFT>, mint_address: Pubkey) -> Re
     }
 
     whitelist_nft.token_address = mint_address;
-    whitelist_nft.last_claim_ts = START_TS;
+    whitelist_nft.last_claimed_epoch = 0;
 
     Ok(())
 }
@@ -121,7 +121,7 @@ pub fn reset_whitelist_nft(
         return err!(DummyError::Error);
     }
 
-    whitelist_nft.last_claim_ts = START_TS;
+    whitelist_nft.last_claimed_epoch = 0;
 
     Ok(())
 }
