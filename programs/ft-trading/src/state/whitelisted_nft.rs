@@ -5,7 +5,7 @@ use anchor_spl::{token::TokenAccount, associated_token};
 
 pub struct WhitelistedNFT {
     pub token_address: Pubkey,
-    pub last_claim_ts: i64,
+    pub last_claimed_epoch: u64,
 }
 
 impl  WhitelistedNFT {

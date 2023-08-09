@@ -5,12 +5,12 @@ use crate::{START_TS, EPOCH_DURATION};
 #[account]
 pub struct UserShareAccount {
     pub epoch: u64,
-    pub reward_share: u64,
+    pub n_share: u16,
     pub owner: Pubkey,
 }
 
 impl UserShareAccount {
-    pub const LEN: usize = 8 + 8 + 8 + 32;
+    pub const LEN: usize = 8 + 8 + 2 + 32;
 
     pub fn validate_epoch(&self) -> bool {
         let now_ts = Clock::get().unwrap().unix_timestamp;
@@ -29,11 +29,11 @@ impl UserShareAccount {
 pub struct  DividendVault {
     pub epoch: u64,
     pub lamport_dividend_amount: u64,
-    pub total_share: u64
+    pub total_n_share: u16
 }
 
 impl DividendVault {
-    pub const LEN: usize = 8 + 8*3;
+    pub const LEN: usize = 8 + 8 + 8;
 
     pub fn validate_epoch(&self) -> bool {
         let now_ts = Clock::get().unwrap().unix_timestamp;

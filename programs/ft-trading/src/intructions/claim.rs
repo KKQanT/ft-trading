@@ -41,7 +41,7 @@ pub fn create_share_account(
     }
     
     user_share_account.epoch = current_epoch;
-    user_share_account.reward_share = 0;
+    user_share_account.n_share = 0;
     user_share_account.owner = owner.key();
     
     Ok(())
@@ -102,6 +102,7 @@ pub fn claim_share(
     let whitelisted_nft = &mut ctx.accounts.whitelisted_nft;
     let user_token_account = &ctx.accounts.user_token_account;
     let now_ts = Clock::get().unwrap().unix_timestamp;
+    let current_epoch = ((now_ts - START_TS)/EPOCH_DURATION) as u64;
 
     if user_share_account.owner != owner.key() {
         msg!("invalid user share account onwer");
@@ -131,12 +132,19 @@ pub fn claim_share(
         return err!(DummyError::Error);
     }
 
-    //save data
-    let reward_share_received = (now_ts - whitelisted_nft.last_claim_ts) as u64;
+    if whitelisted_nft.last_claimed_epoch >= current_epoch {
+        msg!(
+            "already claimed : epoch {} vs epoch {}", 
+            whitelisted_nft.last_claimed_epoch, 
+            current_epoch
+        );
+        return err!(DummyError::Error);
+    }
 
-    user_share_account.reward_share += reward_share_received;
-    dividend_vault.total_share += reward_share_received;
-    whitelisted_nft.last_claim_ts = now_ts;
+    //save data
+    user_share_account.n_share += 1;
+    dividend_vault.total_n_share += 1;
+    whitelisted_nft.last_claimed_epoch = current_epoch;
 
     Ok(())
 }
@@ -217,9 +225,14 @@ pub fn claim_dividend(
         return err!(DummyError::Error);
     }
 
+    if dividend_vault.total_n_share == 0 {
+        msg!("total n share = 0");
+        return err!(DummyError::Error);
+    }
+
     let reward_amount = 
-    ((user_share_account.reward_share as f64) 
-    / (dividend_vault.total_share as f64) 
+    ((user_share_account.n_share as f64) 
+    / (dividend_vault.total_n_share as f64) 
     * (dividend_vault.lamport_dividend_amount as f64)) as u64;
 
     let src = &mut dividend_vault_wallet.to_account_info();

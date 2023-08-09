@@ -48,7 +48,7 @@ pub fn create_dividend_vault(
 
     dividend_vault.epoch = epoch;
     dividend_vault.lamport_dividend_amount = 0;
-    dividend_vault.total_share = 0;
+    dividend_vault.total_n_share = 0;
 
     Ok(())
 }
