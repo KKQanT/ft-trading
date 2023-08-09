@@ -33,7 +33,7 @@ pub struct  DividendVault {
 }
 
 impl DividendVault {
-    pub const LEN: usize = 8 + 8 + 8;
+    pub const LEN: usize = 8 + 8 + 2;
 
     pub fn validate_epoch(&self) -> bool {
         let now_ts = Clock::get().unwrap().unix_timestamp;
