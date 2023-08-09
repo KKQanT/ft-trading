@@ -26,6 +26,7 @@ pub struct Buy<'info> {
     )]
     pub seller_escrow: Account<'info, SellerEscrow>,
     /// CHECK: Seller Account will be checked during both seed (of seller escrow account) checking and intruction process
+    #[account(mut)]
     pub seller: AccountInfo<'info>,
     #[account(mut)]
     pub buyer: Signer<'info>,
@@ -167,6 +168,8 @@ pub fn handler(
     );
 
     token::transfer(transfer_token_cpi_ctx, amount)?;
+
+    seller_escrow.amount -= amount;
 
     //accumulate fee we got    
     dividend_vault.lamport_dividend_amount += platform_fee;

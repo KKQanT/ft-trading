@@ -18,21 +18,20 @@ declare_id!("SETaVQKfUNLS2xUR61uauMTptRdKyaKHfPYjDvHAnxv");
 pub mod ft_trading {
     use super::*;
 
-    pub fn create_dividend_vault(
-        ctx: Context<CreateDividendVault>, 
-        epoch: u64
-    ) -> Result<()> {
+    pub fn create_dividend_vault(ctx: Context<CreateDividendVault>, epoch: u64) -> Result<()> {
         intructions::admin::create_dividend_vault(ctx, epoch)
     }
 
-    pub fn add_whitelist_nft(
-        ctx: Context<WhitelistNFT>,
-        mint_address: Pubkey
+    pub fn add_whitelist_nft(ctx: Context<WhitelistNFT>, mint_address: Pubkey) -> Result<()> {
+        intructions::admin::add_whitelist_nft(ctx, mint_address)
+    }
+
+    pub fn reset_whitelist_nft(
+        ctx: Context<ResetWhitelistNFT>,
+        mint_address: Pubkey,
+        whitelist_nft_bump: u8,
     ) -> Result<()> {
-        intructions::admin::add_whitelist_nft(
-            ctx, 
-            mint_address
-        )
+        intructions::admin::reset_whitelist_nft(ctx, mint_address, whitelist_nft_bump)
     }
 
     pub fn sell(
@@ -53,40 +52,37 @@ pub mod ft_trading {
         seller_escrow_bump: u8,
         epoch: u64,
         dividend_vault_bump: u8,
-        dividend_vault_wallet_bump: u8
+        dividend_vault_wallet_bump: u8,
     ) -> Result<()> {
         intructions::buy::handler(
-            ctx, 
-            escrow_id, 
-            token_address, 
-            amount, 
-            seller_escrow_bump, 
-            epoch, 
-            dividend_vault_bump, 
-            dividend_vault_wallet_bump
+            ctx,
+            escrow_id,
+            token_address,
+            amount,
+            seller_escrow_bump,
+            epoch,
+            dividend_vault_bump,
+            dividend_vault_wallet_bump,
         )
     }
 
-    pub fn create_share_account(
-        ctx: Context<CreateShareAccount>,
-        epoch: u64
-    ) -> Result<()> {
+    pub fn create_share_account(ctx: Context<CreateShareAccount>, epoch: u64) -> Result<()> {
         intructions::claim::create_share_account(ctx, epoch)
     }
 
     pub fn claim_share(
         ctx: Context<ClaimShare>,
-        epoch: u64, 
+        epoch: u64,
         user_share_account_bump: u8,
         dividend_vault_bump: u8,
-        whitelisted_nft_bump: u8
+        whitelisted_nft_bump: u8,
     ) -> Result<()> {
         intructions::claim::claim_share(
-            ctx, 
-            epoch, 
-            user_share_account_bump, 
-            dividend_vault_bump, 
-            whitelisted_nft_bump
+            ctx,
+            epoch,
+            user_share_account_bump,
+            dividend_vault_bump,
+            whitelisted_nft_bump,
         )
     }
 
@@ -95,16 +91,24 @@ pub mod ft_trading {
         epoch: u64,
         user_share_account_bump: u8,
         dividend_vault_bump: u8,
-        dividend_vault_wallet_bump: u8
+        dividend_vault_wallet_bump: u8,
     ) -> Result<()> {
         intructions::claim::claim_dividend(
-            ctx, 
-            epoch, 
-            user_share_account_bump, 
-            dividend_vault_bump, 
-            dividend_vault_wallet_bump
+            ctx,
+            epoch,
+            user_share_account_bump,
+            dividend_vault_bump,
+            dividend_vault_wallet_bump,
         )
     }
 
-
+    pub fn force_close_sell(
+        ctx: Context<ForceCloseSell>,
+        escrow_id: Pubkey,
+        token_address: Pubkey,
+        seller: Pubkey,
+        bump: u8,
+    ) -> Result<()> {
+        intructions::close::handler(ctx, escrow_id, token_address, seller, bump)
+    }
 }
