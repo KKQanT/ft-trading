@@ -12,7 +12,7 @@ pub use state::*;
 pub mod errors;
 pub use errors::*;
 
-declare_id!("SETaVQKfUNLS2xUR61uauMTptRdKyaKHfPYjDvHAnxv");
+declare_id!("S3T2JExjrp6a48LNcxNxBHKa1GTB3bXRmwH3wepB5KQ");
 
 #[program]
 pub mod ft_trading {
