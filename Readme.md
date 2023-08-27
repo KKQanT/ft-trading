@@ -1,6 +1,6 @@
-# <img src="https://cryptologos.cc/logos/solana-sol-logo.png?v=025" with="25" height="25"> Solana Token Marketplace with Dividend
+# <img src="https://cryptologos.cc/logos/solana-sol-logo.png?v=025" with="25" height="25"> Token Trading Platform with On-chain Dividend System
 
-This is the backbone smart contract of the [token trading platform](https://s3t-trade.vercel.app/) that I have developed to showcase how tokens can function as stocks. In this system, shareholders (those who hold platform's tokens) can retrieve their portion of company profits, which are transparently recorded on the Solana blockchain at predefined timeframes.
+This is the foundational smart contract of the [token trading platform](https://s3t-trade.vercel.app/) that I have developed to showcase how tokens can function as stocks. In this system, shareholders (those who hold the platform's tokens) can retrieve their portion of company profits, which are transparently recorded on the Solana blockchain at predefined intervals.
 
 This on-chain program was deployed on devnet at: [S3T2JExjrp6a48LNcxNxBHKa1GTB3bXRmwH3wepB5KQ](https://solscan.io/account/S3T2JExjrp6a48LNcxNxBHKa1GTB3bXRmwH3wepB5KQ?cluster=devnet)
 
