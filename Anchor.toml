@@ -2,7 +2,7 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-ft_trading = "S3T2JExjrp6a48LNcxNxBHKa1GTB3bXRmwH3wepB5KQ"
+ft_trading = "S3TX6wejVn7n9d7CPtLySdBaaTgu8RdMCByrCDpEkR4"
 
 [registry]
 url = "https://api.apr.dev"

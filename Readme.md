@@ -2,7 +2,7 @@
 
 This is the foundational smart contract of the [token trading platform](https://s3t-trade.vercel.app/) that I have developed to showcase how tokens can function as stocks. In this system, shareholders (those who hold the platform's tokens) can retrieve their portion of company profits, which are transparently recorded on the Solana blockchain at predefined intervals.
 
-This on-chain program was deployed on devnet at: [S3T2JExjrp6a48LNcxNxBHKa1GTB3bXRmwH3wepB5KQ](https://solscan.io/account/S3T2JExjrp6a48LNcxNxBHKa1GTB3bXRmwH3wepB5KQ?cluster=devnet)
+This on-chain program was deployed on devnet at: [S3TX6wejVn7n9d7CPtLySdBaaTgu8RdMCByrCDpEkR4](https://solscan.io/account/S3TX6wejVn7n9d7CPtLySdBaaTgu8RdMCByrCDpEkR4?cluster=devnet)
 
 # This on-chain program was divided into two parts.
 
