@@ -8,3 +8,4 @@ test-ledger
 update_auth.json
 admin.json
 program_keypair.json
+Cargo.lock
